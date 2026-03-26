@@ -4,6 +4,8 @@ import com.example.demo2.common.Result;
 import com.example.demo2.dto.UserDTO;
 import com.example.demo2.service.UserService;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -39,9 +41,17 @@ public class UserController {
         return Result.fail("用户名或密码错误");
     }
 
+//    @GetMapping("/list")
+//    public List<UserDTO> list(HttpServletRequest request) {
+//        String username = (String) request.getAttribute("username");
+//        System.out.println("当前用户：" + username);
+//        return userService.getAllUsers();
+//    }
     @GetMapping("/list")
-    public List<UserDTO> list(HttpServletRequest request) {
-        String username = (String) request.getAttribute("username");
+    public List<UserDTO> list() {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = (String) auth.getPrincipal();
         System.out.println("当前用户：" + username);
         return userService.getAllUsers();
     }
