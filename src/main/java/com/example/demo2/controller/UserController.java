@@ -1,6 +1,7 @@
 package com.example.demo2.controller;
 
 import com.example.demo2.common.Result;
+import com.example.demo2.dto.LoginResponse;
 import com.example.demo2.dto.UserDTO;
 import com.example.demo2.service.UserService;
 
@@ -32,12 +33,11 @@ public class UserController {
     public Result<?> login(@RequestParam String username,
                            @RequestParam String password) {
 
-        String token = userService.login(username, password);
+        LoginResponse response = userService.login(username, password);
 
-        if (token != null) {
-            return Result.success(token);
+        if (response != null) {
+            return Result.success(response);
         }
-
         return Result.fail("用户名或密码错误");
     }
 

@@ -1,5 +1,7 @@
 package com.example.demo2.config;
 
+import com.example.demo2.security.JwtAccessDeniedHandler;
+import com.example.demo2.security.JwtAuthenticationEntryPoint;
 import com.example.demo2.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +15,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity // 1. 开启 Spring Security 配置
 public class SecurityConfig {
+    private final JwtAuthenticationEntryPoint entryPoint;
+    private final JwtAccessDeniedHandler accessDeniedHandler;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    public SecurityConfig(JwtAuthenticationEntryPoint entryPoint,
+                          JwtAccessDeniedHandler accessDeniedHandler,
+                          JwtAuthenticationFilter filter) {
+        this.entryPoint = entryPoint;
+        this.accessDeniedHandler = accessDeniedHandler;
+        this.jwtAuthenticationFilter = filter;
+    }
+    
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -27,9 +40,13 @@ public class SecurityConfig {
                         )
                 )
                 .httpBasic(basic -> basic.disable())
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(entryPoint)
+                        .accessDeniedHandler(accessDeniedHandler)
+                )
                 // 添加JWT过滤器
                 .addFilterBefore(
-                        new JwtAuthenticationFilter(),
+                        jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class
                 )
                 // 接口权限管理
