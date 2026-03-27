@@ -1,11 +1,24 @@
-<script setup lang="ts"></script>
-
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <!-- router-view 是路由出口，LoginView 等组件会渲染在这里 -->
+  <router-view />
 </template>
 
-<style scoped></style>
+<script setup lang="ts">
+// 这里不需要写任何逻辑，除非你有全局布局需求
+</script>
+
+<style>
+/* 全局样式重置 */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: #f5f7fa; /* 给整个页面一个淡淡的背景色 */
+}
+
+/* 移除默认链接下划线 */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+</style>

@@ -1,7 +1,9 @@
 package com.example.demo2.controller;
 
 import com.example.demo2.common.Result;
+import com.example.demo2.dto.LoginRequest;
 import com.example.demo2.dto.LoginResponse;
+import com.example.demo2.dto.RegisterRequest;
 import com.example.demo2.dto.UserDTO;
 import com.example.demo2.service.UserService;
 
@@ -23,22 +25,16 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestParam String username,
-                           @RequestParam String password) {
-        userService.register(username, password);
-        return "注册成功";
+    public Result<?> register(@RequestBody RegisterRequest request) {
+
+        userService.register(request.getUsername(), request.getPassword());
+        return Result.success("注册成功");
     }
 
     @PostMapping("/login")
-    public Result<?> login(@RequestParam String username,
-                           @RequestParam String password) {
-
-        LoginResponse response = userService.login(username, password);
-
-        if (response != null) {
-            return Result.success(response);
-        }
-        return Result.fail("用户名或密码错误");
+    public Result<?> login(@RequestBody LoginRequest request) {
+        LoginResponse response = userService.login(request.getUsername(), request.getPassword());
+        return Result.success(response);
     }
 
 //    @GetMapping("/list")

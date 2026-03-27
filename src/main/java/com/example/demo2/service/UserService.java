@@ -1,5 +1,7 @@
 package com.example.demo2.service;
 import com.example.demo2.dto.LoginResponse;
+import com.example.demo2.exception.BusinessException;
+import com.example.demo2.exception.LoginFailException;
 import com.example.demo2.util.JwtUtil;
 import com.example.demo2.dto.UserDTO;
 import com.example.demo2.entity.User;
@@ -22,34 +24,28 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User register(String username, String password) {
+    public void register(String username, String password) {
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new BusinessException(409, "用户名 [" + username + "] 已存在，请更换");
+        }
         User user = new User();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
-//    public String login(String username, String password) {
-//        Optional<User> user = userRepository.findByUsername(username);
-//        if (user.isPresent() &&
-//                passwordEncoder.matches(password, user.get().getPassword())) {
-//
-//            return JwtUtil.generateToken(username);
-//        }
-//
-//        return null;
-//    }
+
     public LoginResponse login(String username, String password) {
 
         Optional<User> optionalUser = userRepository.findByUsername(username);
-        if (optionalUser.isPresent() &&
-                passwordEncoder.matches(password, optionalUser.get().getPassword())) {
-            User user = optionalUser.get();
-            String token = JwtUtil.generateToken(username);
-            UserDTO userDTO = new UserDTO(user.getId(), user.getUsername());
-            return new LoginResponse(token, userDTO);
+        User user = optionalUser.orElseThrow(() -> new RuntimeException("用户不存在"));
+        if (!passwordEncoder.matches(password, optionalUser.get().getPassword())) {
+            throw new LoginFailException("用户名或密码错误");
         }
-        return null;
+
+        String token = JwtUtil.generateToken(username);
+        UserDTO userDTO = new UserDTO(user.getId(), user.getUsername());
+        return new LoginResponse(token, userDTO);
     }
 
 

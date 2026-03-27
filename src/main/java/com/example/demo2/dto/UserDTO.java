@@ -1,5 +1,8 @@
 package com.example.demo2.dto;
 
+import lombok.Data;
+
+@Data
 public class UserDTO {
 
     private Long id;
@@ -10,11 +13,4 @@ public class UserDTO {
         this.username = username;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
 }
