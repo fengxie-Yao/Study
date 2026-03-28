@@ -26,12 +26,15 @@
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
+import { useUserStore } from '@/stores/user'
+import { loginApi } from '@/api/auth'
+
 // 引入你的 axios 实例 (假设你创建了 src/api/request.ts)
 import request from '@/api/request'
 
 const router = useRouter()
 const loading = ref(false)
-
+const userStore = useUserStore()
 // 定义表单数据类型
 interface LoginForm {
   username: string
@@ -52,19 +55,10 @@ const handleLogin = async () => {
   loading.value = true
   try {
     // 调用后端接口
-    const res: any = await request.post('/api/user/login', form)
-
-    // 假设后端返回结构 { code: 200, data: { token, ... } }
-    if (res.code === 200) {
-      const { token, username, role } = res.data
-      // 保存 Token
-      localStorage.setItem('token', token)
-      localStorage.setItem('username', username)
-
-      ElMessage.success('登录成功')
-      // 跳转首页 (或者你希望的受保护页面)
-      router.push('/')
-    }
+    const res = await loginApi(form)
+    userStore.setLogin(res)
+    ElMessage.success('登录成功')
+    router.push('/')
   } catch (error) {
     console.error(error)
     // 错误拦截器里已经处理了 message 提示

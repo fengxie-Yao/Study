@@ -12,7 +12,8 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
   background-color: #f5f7fa; /* 给整个页面一个淡淡的背景色 */
 }
 
@@ -20,5 +21,8 @@ body {
 a {
   text-decoration: none;
   color: inherit;
+}
+#app {
+  height: 100%;
 }
 </style>

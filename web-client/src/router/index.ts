@@ -10,8 +10,8 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      // 2. 关键：访问根路径时，直接重定向到登录页
-      redirect: '/login'
+      component: HomeViewView,
+      meta: { requiresAuth: false }
     },
     {
       path: '/login',
@@ -23,12 +23,18 @@ const router = createRouter({
       name: 'register',
       component: RegisterViewView
     },
-    {
-      path: '/home',
-      name: 'home',
-      component: HomeViewView
-    }
+
   ]
 })
+// 全局前置守卫
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('token')
 
+  if (to.meta.requiresAuth && !token) {
+    // 如果需要登录但没 Token，跳回登录页
+    next('/login')
+  } else {
+    next()
+  }
+})
 export default router

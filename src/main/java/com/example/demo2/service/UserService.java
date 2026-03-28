@@ -43,7 +43,7 @@ public class UserService {
             throw new LoginFailException("用户名或密码错误");
         }
 
-        String token = JwtUtil.generateToken(username);
+        String token = JwtUtil.generateToken(user);
         UserDTO userDTO = new UserDTO(user.getId(), user.getUsername());
         return new LoginResponse(token, userDTO);
     }
