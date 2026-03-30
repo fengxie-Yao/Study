@@ -25,7 +25,7 @@
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import request from '@/api/request'
+import {registerApi} from "@/api/user.ts";
 
 const router = useRouter()
 
@@ -46,11 +46,9 @@ const handleRegister = async () => {
   }
 
   try {
-    const res: any = await request.post('/api/user/register', form)
-    if (res.code === 200) {
-      ElMessage.success('注册成功，请登录')
-      router.push('/login')
-    }
+    await registerApi(form)
+    ElMessage.success('注册成功，请登录')
+    router.push('/login')
   } catch (error) {
     console.error(error)
   }

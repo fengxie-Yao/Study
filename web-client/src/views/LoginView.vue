@@ -29,8 +29,6 @@ import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/stores/user'
 import { loginApi } from '@/api/auth'
 
-// 引入你的 axios 实例 (假设你创建了 src/api/request.ts)
-import request from '@/api/request'
 
 const router = useRouter()
 const loading = ref(false)

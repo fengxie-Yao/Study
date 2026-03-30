@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginViewView from '../views/LoginView.vue'
 import RegisterViewView from '../views/RegisterView.vue'
 import HomeViewView from '../views/HomeView.vue'
+import UserManageView from '../views/UserManageView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,6 +24,16 @@ const router = createRouter({
       name: 'register',
       component: RegisterViewView
     },
+    {
+      path: '/system/users',
+      name: 'UserManage',
+      component: UserManageView,
+      meta: {
+        title: '用户管理',
+        requiresAuth: true,
+        roles: ['ROLE_ADMIN'] // 只有管理员可访问
+      }
+    }
 
   ]
 })
