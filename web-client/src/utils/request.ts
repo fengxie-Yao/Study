@@ -18,12 +18,15 @@ const service: AxiosInstance = axios.create({
 // 请求拦截器
 service.interceptors.request.use((config) => {
   const userStore = useUserStore()
-  // 统一从 pinia 获取 token（比 localStorage 更规范）
-  const token = userStore.token || localStorage.getItem('token')
-
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
+  config.headers['Content-Type'] = 'application/json'
+  // console.log('Request URL:', config.url)
+  if (config.url !== '/user/login') {
+    const token = userStore.token || localStorage.getItem('token')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
   }
+
   return config
 }, (error) => {
   return Promise.reject(error)

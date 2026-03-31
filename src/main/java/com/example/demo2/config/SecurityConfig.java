@@ -33,6 +33,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
+                // start cors
+                .cors(cors -> {})
                 // 关闭 csrf
                 .csrf(csrf -> csrf.disable())
                 // 不使用session

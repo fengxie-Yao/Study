@@ -3,6 +3,7 @@ package com.example.demo2.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -23,4 +24,8 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<Role> roles;
+    private LocalDateTime createTime;
+    private String nickname;
+    private Boolean enabled;
+    private String email;
 }

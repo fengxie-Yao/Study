@@ -5,6 +5,7 @@ import com.example.demo2.dto.*;
 import com.example.demo2.service.UserService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,13 +19,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
+@Slf4j
 public class UserController {
 
     private final UserService userService;
 
     @PostMapping("/register")
     public Result<?> register(@RequestBody RegisterRequest request) {
-
         userService.register(request.getUsername(), request.getPassword());
         return Result.success("注册成功");
     }
@@ -35,16 +36,11 @@ public class UserController {
         return Result.success(response);
     }
 
-    @GetMapping("/list")
-    public List<UserDTO> list() {
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = (String) auth.getPrincipal();
-        System.out.println("当前用户：" + username);
-        return userService.getAllUsers();
-    }
     @GetMapping
     public Result<Page<UserDTO>> listUsers(@ModelAttribute UserQuery query) {
+        log.info("get：listusers");
+        log.info("{}", query);
+
         return Result.success(userService.getUsers(query));
     }
     @PostMapping

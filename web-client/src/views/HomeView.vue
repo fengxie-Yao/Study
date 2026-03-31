@@ -12,6 +12,7 @@
           <template v-if="!isLoggedIn">
             <el-button type="info" plain @click="$router.push('/login')">登录</el-button>
             <el-button type="primary" @click="$router.push('/register')">注册</el-button>
+            <el-button type="manager" @click="$router.push('/system/users')">管理</el-button>
           </template>
 
           <!-- 情况 B: 已登录 -->

@@ -62,13 +62,6 @@ public class UserService {
     }
 
 
-    public List<UserDTO> getAllUsers() {
-        return userRepository.findAll()
-                .stream()
-                .map(user -> new UserDTO(user.getId(), user.getUsername()))
-                .collect(Collectors.toList());
-    }
-
     // 分页查询
     public Page<UserDTO> getUsers(UserQuery query) {
         Pageable pageable = PageRequest.of(query.getPageNum() - 1, query.getPageSize(), Sort.by("createTime").descending());
@@ -129,9 +122,9 @@ public class UserService {
             if (StringUtils.hasText(request.getPassword())) {
                 user.setPassword(passwordEncoder.encode(request.getPassword()));
             }
-            // user.setNickname(request.getNickname());
-            // user.setEmail(request.getEmail());
-            // user.setEnabled(request.getEnabled());
+             user.setNickname(request.getNickname());
+             user.setEmail(request.getEmail());
+             user.setEnabled(request.getEnabled());
         }
 
         // 处理角色关联

@@ -6,5 +6,5 @@ export function loginApi(data: {
   username: string
   password: string
 }) {
-  return post<LoginResponse>('/login', data)
+  return post<LoginResponse>('/api/user/login', data)
 }
